@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,53 +12,25 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : IProductDal
+    // EfEntityRepositoryBase: base bir sınıftır. kod tekrarı yapmamak için kullanılır. IProductDal'dan implementasyon yaparken, EfEntityRepositoryBase sınıfını kullanarak, Product sınıfı için gerekli olan veritabanı işlemlerini gerçekleştirebiliriz.
+    public class EfProductDal : EfEntityRepositoryBase<Product, DatabaseContext>, IProductDal
     {
-        public void Add(Product entity)
+        public List<ProductDetailDto> GetProductDetails()
         {
             using (DatabaseContext context = new DatabaseContext())
             {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State= EntityState.Added;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(Product entity)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
-
-        public Product Get(Expression<Func<Product, bool>> filter)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                return context.Set<Product>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                return filter == null
-                    ? context.Set<Product>().ToList()
-                    : context.Set<Product>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Product entity)
-        {
-            using (DatabaseContext context = new DatabaseContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
+                // Join işlemleri
+                var result = from product in context.Products
+                             join category in context.Categories
+                             on product.CategoryId equals category.CategoryId
+                             select new ProductDetailDto
+                             {
+                                 ProductId = product.ProductId,
+                                 ProductName = product.ProductName,
+                                 CategoryName = category.CategoryName,
+                                 UnitsInStock = product.UnitsInStock
+                             };
+                return result.ToList();
             }
         }
     }

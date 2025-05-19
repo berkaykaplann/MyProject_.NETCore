@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
+        
         List<Product> GetAll();
         List<Product> GetAllByCategoryId(int categoryId);
         List<Product> GetAllByUnitPrice(decimal min, decimal max); // iki fiyat arası ürünleri getir
+        List<ProductDetailDto> GetProductDetails(); // ürün detaylarını getir
+
     }
 }
