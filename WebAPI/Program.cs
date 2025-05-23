@@ -13,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<IProductService, ProductManager>();
 builder.Services.AddSingleton<IProductDal, EfProductDal>();
 
+builder.Services.AddSingleton<ICustomerService, CustomerManager>();
+builder.Services.AddSingleton<ICustomerDal, EfCustomerDal>();
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

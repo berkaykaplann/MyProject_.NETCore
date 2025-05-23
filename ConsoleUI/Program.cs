@@ -3,30 +3,61 @@
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
+using Entities.Concrete;
 
 // ProductTest();
 // CategoryTest();
-//ProductDetailTest();
-ProductSuccessTest();
+// ProductDetailTest();
+// ProductSuccessTest();
+// CustomerAddedTest();
+CustomerListedTest();
 
-static void ProductSuccessTest()
+static void CustomerListedTest()
 {
-    ProductManager productManager = new ProductManager(new EfProductDal());
-
-    var result = productManager.GetProductDetails();
-    if (result.isSuccess==true)
+    CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+    var result = customerManager.GetAll();
+    foreach (var customer in result.Data)
     {
-        foreach (var product in result.Data)
-        {
-            Console.WriteLine(product.ProductName + "/" + product.CategoryName);
-        }
+        Console.WriteLine(customer.CustomerId + "/" + customer.CompanyName + "/" + customer.ContactName + "/" + customer.City);
     }
-    else
-    {
-        Console.WriteLine(result.Message);
-    }
-
 }
+    static void CustomerAddedTest()
+{
+    CustomerManager customerManager= new CustomerManager(new EfCustomerDal());
+    Console.WriteLine("Adınızı Girin:");
+    string name = Console.ReadLine();
+    Console.WriteLine("Şirket Girin:");
+    string companyName = Console.ReadLine();
+    Console.WriteLine("Şehir Girin:");
+    string city = Console.ReadLine();
+    customerManager.Add(new Customer
+    {
+        CustomerId = "1",
+        CompanyName = companyName,
+        ContactName = name,
+        City = city
+    });
+}
+
+
+//static void ProductSuccessTest()
+//{
+//    ProductManager productManager = new ProductManager(new EfProductDal());
+
+//    var result = productManager.GetProductDetails();
+//    if (result.isSuccess==true)
+//    {
+//        foreach (var product in result.Data)
+//        {
+//            Console.WriteLine(product.ProductName + "/" + product.CategoryName);
+//        }
+//    }
+//    else
+//    {
+//        Console.WriteLine(result.Message);
+//    }
+
+//}
 //static void ProductDetailTest()
 //{
 //    ProductManager productManager = new ProductManager(new EfProductDal());

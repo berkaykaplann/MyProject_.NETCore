@@ -1,6 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,52 +7,48 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class OrdersController : ControllerBase
     {
-        IProductService _productService;
-        public ProductsController(IProductService productService)
+        IOrderService _orderService;
+
+        public OrdersController(IOrderService orderService)
         {
-            _productService = productService;
+            _orderService = orderService;
         }
+
 
         [HttpGet("getall")]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
-            
-            var result = _productService.GetAll();
-            if(result.isSuccess)
+            var result = _orderService.GetAll();
+            if (result.isSuccess)
             {
                 return Ok(result); // 200
             }
             return BadRequest(result); // 400
         }
-
 
         [HttpGet("getbyid")]
-
-        public IActionResult GetById(int id) 
+        public IActionResult GetById(int id)
         {
-            var result = _productService.GetById(id);
+            var result = _orderService.GetById(id);
             if (result.isSuccess)
             {
                 return Ok(result); // 200
             }
             return BadRequest(result); // 400
         }
-
-
 
         [HttpPost("add")]
-        public IActionResult Add(Product product)
+        public IActionResult Add(Order order)
         {
-            var result = _productService.Add(product);
+            var result = _orderService.Add(order);
             if (result.isSuccess)
             {
                 return Ok(result); // 200
             }
             return BadRequest(result); // 400
         }
-
 
     }
 }
