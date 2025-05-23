@@ -61,9 +61,6 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails()); 
         }
 
-        public List<ProductDetailDto> GetProductDetails()
-        {
-            return _productDal.GetProductDetails(); 
-        }
+       
     }
 }
