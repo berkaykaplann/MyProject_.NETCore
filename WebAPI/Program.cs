@@ -20,11 +20,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+
+// IoC yapýlandýrmasý:  Autofac kullanarak baðýmlýlýklarý kaydetme. AutofacBusinessModule sýnýfýnda kullanmýþ olduðumuz baðýmlýlýklarý burada kullanmasý gerektiði WepAPI'ye söylüyoruz.
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .ConfigureContainer<ContainerBuilder>(builder =>
             {
                 builder.RegisterModule(new AutofacBusinessModule());
             });
+
+
+
+
+
 
 var app = builder.Build();
 

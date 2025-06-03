@@ -10,7 +10,7 @@ using Entities.Concrete;
 // ProductDetailTest();
 // ProductSuccessTest();
 // CustomerAddedTest();
-CustomerListedTest();
+//CustomerListedTest();
 
 static void CustomerListedTest()
 {
@@ -82,7 +82,7 @@ static void CategoryTest()
 {
     CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
-    foreach (var category in categoryManager.GetAll())
+    foreach (var category in categoryManager.GetAll().Data)
     {
         Console.WriteLine(category.CategoryName);
     }

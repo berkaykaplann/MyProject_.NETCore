@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace Business.DependencyResolvers.Autofac
 {
+
+    // Dependency Injection (DI) için Autofac kullanarak iş katmanındaki bağımlılıkları kaydeden sınıf.
+
     public class AutofacBusinessModule:Module
     {
         protected override void Load(ContainerBuilder builder)
@@ -22,16 +25,20 @@ namespace Business.DependencyResolvers.Autofac
            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance(); 
            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
            builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
+           builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
+           builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
+           builder.RegisterType<OrderManager>().As<IOrderService>().SingleInstance();
+           builder.RegisterType<EfOrderDal>().As<IOrderDal>().SingleInstance();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
-                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
-                {
-                    Selector = new AspectInterceptorSelector()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions() 
+                { 
+                    Selector = new AspectInterceptorSelector() 
                 }).SingleInstance();
-
 
         }
     }
