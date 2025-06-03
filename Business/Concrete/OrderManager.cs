@@ -24,13 +24,13 @@ namespace Business.Concrete
         {
             
             _orderDal.Add(order);
-            return new SuccessResult(Message.OrderAdded);
+            return new SuccessResult(Messages.OrderAdded);
         }
 
 
         public IDataResult<List<Order>> GetAll()
         {
-            return new SuccessDataResult<List<Order>>(_orderDal.GetAll(),Message.OrderListed);
+            return new SuccessDataResult<List<Order>>(_orderDal.GetAll(),Messages.OrderListed);
         }
 
         public IDataResult<Order> GetById(int orderId)

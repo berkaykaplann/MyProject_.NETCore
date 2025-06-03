@@ -1,0 +1,25 @@
+﻿using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Core.Extensions
+{
+    public static class ServiceCollectionExtensions
+    {
+        // Bu metot Core katmanı da dahil olmak üzere ekleyeceğimiz bütün injectionları bir arada toplayabileceğimiz bir yapıya dönüştü.
+        public static IServiceCollection AddDependencyResolvers(this IServiceCollection serviceCollection, ICoreModule[] modules)
+        {
+            // modules deki tüm modülleri serviceCollection'a ekler
+
+            foreach (var module in modules)
+            {
+                module.Load(serviceCollection);
+            }
+            return ServiceTool.Create(serviceCollection);
+        }
+    }
+}

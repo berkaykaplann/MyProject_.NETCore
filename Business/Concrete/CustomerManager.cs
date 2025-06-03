@@ -23,13 +23,13 @@ namespace Business.Concrete
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
-            return new SuccessResult(Message.CustomerAdded);
+            return new SuccessResult(Messages.CustomerAdded);
         }
 
 
         public IDataResult<List<Customer>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Message.CustomersListed);
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(),Messages.CustomersListed);
         }
 
         public IDataResult<Customer> GetById(string customerId)

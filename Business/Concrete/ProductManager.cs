@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -28,6 +29,7 @@ namespace Business.Concrete
             _categoryService = categoryService;
         }
 
+        [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
@@ -39,7 +41,9 @@ namespace Business.Concrete
             }
 
             _productDal.Add(product);
-            return new SuccessResult(Message.ProductAdded);
+
+            return new SuccessResult(Messages.ProductAdded);
+
 
         }
 
@@ -47,9 +51,11 @@ namespace Business.Concrete
         {
             if (DateTime.Now.Hour == 10)
             {
-                return new ErrorDataResult<List<Product>>(Message.MaintenanceTime);
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Message.ProductsListed);
+
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
+
         }
 
         public IDataResult<List<Product>> GetAllByCategoryId(int id)
@@ -87,7 +93,9 @@ namespace Business.Concrete
             var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
             if (result >= 10)
             {
-                return new ErrorResult(Message.ProductCountOfCategoryError);
+
+                return new ErrorResult(Messages.ProductCountOfCategoryError);
+
             }
             return new SuccessResult();
         }
@@ -100,7 +108,9 @@ namespace Business.Concrete
             var result = _productDal.GetAll(p => p.ProductName == productName).Any();
             if (result == true)
             {
-                return new ErrorResult(Message.ProductNameInvalid);
+
+                return new ErrorResult(Messages.ProductNameInvalid);
+
             }
             return new SuccessResult();
 
@@ -115,7 +125,9 @@ namespace Business.Concrete
 
             if (result.Data.Count>15)
             {
-                return new ErrorResult(Message.CategoryLimitExceded);
+
+                return new ErrorResult(Messages.CategoryLimitExceded);
+
             }
 
             return new SuccessResult();
